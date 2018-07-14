@@ -12,7 +12,7 @@ app.use(bodyParser.json())
 var movies = [
     {
         "id": 1,
-        "name": "The dark knigt"
+        "name": "The dark knight"
     },
     {
         "id": 2,
@@ -59,12 +59,43 @@ app.post('/movies', function (req, res) {
 // PUT /movies/id
 app.put('/movies/:id', function (req, res) {
 
+    var reqId = req.params.id;
+    var data = req.body;
 
+    var result
+    movies.forEach(function (movie) {
+        if (movie.id == reqId) {
+            movie.rating = data.rating;
+            result = movie;
+        }
+    });
+
+    if (result) {
+        res.send(result);
+    }
+    else {
+        res.sendStatus(404);
+    }
 })
 
 // DELETE /movies/id
 app.delete('/movies/:id', function (req, res) {
 
+    var reqId = req.params.id;
+
+    var result;
+    movies.forEach(function (movie) {
+        if (movie.id == reqId) {
+            result = movies.splice(reqId - 1, 1);
+        }
+    });
+
+    if (result) {
+        res.send(result);
+    }
+    else {
+        res.sendStatus(404);
+    }
 });
 
 //listen
